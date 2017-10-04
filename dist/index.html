@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Timer</title>
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#1481F5"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link type="text/css" rel="stylesheet" href="css/default.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" media="none" onload="if(media!='screen'){media='screen'};" />
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="none" onload="if(media!='screen,projection'){media='screen,projection'};Window.removeLoader=true" />
+    <noscript>
+        <style>
+            #loading-overlay .inner-wrapper h3{display:unset!important}body{margin: 0!important}#loading-overlay{top:0;left:0;right:0;bottom:0;width:100%;height:100%;position:absolute}main{display:none}
+        </style>
+    </noscript>
+  </head>
+  <body>
+    <div id="loading-overlay">
+          <div class="inner-wrapper">
+              <div class="spinner">
+                  <div class="double-bounce1"></div>
+                  <div class="double-bounce2"></div>
+              </div>
+              <h3 style="display: none;">Please enable JavaScript to use this site.</h3>
+          </div>
+    </div>
+    <main>
+      <div class="progress" style="display:none;">
+            <div class="determinate" id="progress__time-remaning"></div>
+        </div>
+        <div class="valign-wrapper">
+            <h1 class="center-align" id="text__time-remaining"></h1>
+            <div class="time-input-fields row">
+                <div class="col s0 m2 l3"></div>
+                <div class="col s12 m8 l6 row">
+                    <div class="input-field inline col s6 m3">
+                        <input id="number__days" type="number" placeholder="0" class="validate">
+                        <label for="number__days">Days</label>
+                    </div>
+                    <div class="input-field inline col s6 m3">
+                        <input id="number__hours" type="number" placeholder="0" class="validate">
+                        <label for="number__hours">Hours</label>
+                    </div>
+                    <div class="input-field inline col s6 m3">
+                        <input id="number__minutes" type="number" placeholder="0" class="validate">
+                        <label for="number__minutes">Minutes</label>
+                    </div>
+                    <div class="input-field inline col s6 m3">
+                        <input id="number__seconds" type="number" placeholder="0" class="validate">
+                        <label for="number__seconds">Seconds</label>
+                    </div>
+                </div>
+                <div class="col s0 m2 l3"></div>
+            </div>
+            <div class="control-buttons">
+                <a class="waves-effect waves-teal btn-flat tooltipped" id="button__start-timer" href="#" data-position="bottom" data-delay="50" data-tooltip="Start"><i class="material-icons">play_arrow</i></a>
+                <!--a class="waves-effect waves-teal btn-flat tooltipped" href="#"><i class="material-icons" data-position="bottom" data-delay="50" data-tooltip="Pause">pause</i></a>-->
+                <a class="waves-effect waves-teal btn-flat tooltipped" id="button__reset-timer" href="#" data-position="bottom" data-delay="50" data-tooltip="Reset"><i class="material-icons">stop</i></a>
+                <a class="waves-effect waves-teal btn-flat tooltipped" id="button__restart-timer" href="#" data-position="bottom" data-delay="50" data-tooltip="Restart"><i class="material-icons">replay</i></a>
+            </div>
+        </div>
+    </main>
+    <audio src='audio/beep.wav' id="audio__beep" type="audio/wav"></audio>
+    <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+  </body>
+</html>
