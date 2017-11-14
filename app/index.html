@@ -10,19 +10,20 @@
     <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="none" onload="if(media!='screen,projection'){media='screen,projection'};Window.removeLoader=true" />
     <noscript>
         <style>
-            #loading-overlay .inner-wrapper h3{display:unset!important}body{margin: 0!important}#loading-overlay{top:0;left:0;right:0;bottom:0;width:100%;height:100%;position:absolute}main{display:none}
+            #loading-overlay .inner-wrapper h3{display:unset!important}body{margin: 0!important}#loading-overlay{top:0;left:0;right:0;bottom:0;width:100%;height:100%;position:absolute;}.loader-background{width:100%!important;height:100%!important;border-radius:0!important;}main{display:none}
         </style>
     </noscript>
   </head>
   <body>
     <div id="loading-overlay">
-          <div class="inner-wrapper">
-              <div class="spinner">
-                  <div class="double-bounce1"></div>
-                  <div class="double-bounce2"></div>
-              </div>
-              <h3 style="display: none;">Please enable JavaScript to use this site.</h3>
+        <div class="loader-background"></div>
+        <div class="inner-wrapper">
+          <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
           </div>
+        </div>
+        <h3 style="display: none;">Please enable JavaScript to use this site.</h3>
     </div>
     <main>
       <div class="progress" style="display:none;">

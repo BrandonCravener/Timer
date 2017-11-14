@@ -90,61 +90,57 @@
     }
 
     function getCurrentTime(ms) {
-        var timeText = "",
-            tabTimeText = "",
-            days = ms / 1000 / 60 / 60 / 24 > 1,
-            numDays = 0,
-            hours = ms / 1000 / 60 / 60 > 1,
-            numHours = 0,
-            minutes = ms / 1000 / 60 > 1,
-            numMinutes = 0,
-            seconds = ms / 1000,
-            numSeconds = 0,
-            curPos = ms;
-        if (days) {
-            var num = Math.floor(curPos / 1000 / 60 / 60 / 24);
-            numDays = num;
-            curPos -= num * 1000 * 60 * 60 * 24;
+        var tabTimeTextArray = [],
+          num,
+          result = {
+            tabTimeText: '',
+            timeText: '',
+          },
+          curPos = ms;
+        if (ms / 1000 / 60 / 60 / 24 > 1) {
+          num = Math.floor(curPos / 1000 / 60 / 60 / 24);
+          result.numDays = num;
+          curPos -= num * 1000 * 60 * 60 * 24;
+          if (num) {
+            result.timeText += result.numDays + ' days ';
+            tabTimeTextArray.push(result.numDays + 'd');
+          }
         }
-        if (hours) {
-            var num = Math.floor(curPos / 1000 / 60 / 60);
-            numHours = num;
-            curPos -= num * 1000 * 60 * 60;
+        if (ms / 1000 / 60 / 60 > 1) {
+          num = Math.floor(curPos / 1000 / 60 / 60);
+          result.numHours = num;
+          curPos -= num * 1000 * 60 * 60;
+          if (num) {
+            result.timeText += result.numHours + ' hours ';
+            tabTimeTextArray.push(result.numHours + 'h');
+          }
         }
-        if (minutes) {
-            var num = Math.floor(curPos / 1000 / 60);
-            numMinutes = num;
-            curPos -= num * 1000 * 60;
+        if (ms / 1000 / 60 > 1) {
+          num = Math.floor(curPos / 1000 / 60);
+          result.numMinutes = num;
+          curPos -= num * 1000 * 60;
+          if (num) {
+            result.timeText += result.numMinutes + ' minutes ';
+            tabTimeTextArray.push(result.numMinutes + 'm');
+          }
         }
-        if (seconds) {
-            var num = Math.floor(curPos / 1000);
-            numSeconds = num;
-            curPos -= num * 1000;
+        if (ms / 1000 >= 1) {
+          num = Math.floor(curPos / 1000);
+          result.numSeconds = num;
+          curPos -= num * 1000;
+          if (num) {
+            result.timeText += result.numSeconds + ' seconds ';
+            tabTimeTextArray.push(result.numSeconds + 's');
+          }
         }
-        if (numDays) {
-            timeText += numDays + ' days ';
-            tabTimeText += numDays + "d:";
+        for (var i = 0; i < tabTimeTextArray.length; i++) {
+          var unit = tabTimeTextArray[i];
+          result.tabTimeText += unit;
+          if (i !== tabTimeTextArray.length - 1) {
+            result.tabTimeText += ':';
+          }
         }
-        if (numHours) {
-            timeText += numHours + ' hours ';
-            tabTimeText += numHours + "h:";
-        }
-        if (numMinutes) {
-            timeText += numMinutes + ' minutes ';
-            tabTimeText += numMinutes + "m:";
-        }
-        if (numSeconds) {
-            timeText += numSeconds + ' seconds ';
-            tabTimeText += numSeconds + "s";
-        }
-        return {
-            'days': numDays,
-            'hours': numHours,
-            'minutes': numMinutes,
-            'seconds': numSeconds,
-            'timeText': timeText,
-            'tabTimeText': tabTimeText
-        }
+        return result;
     }
 
     function startProgressTimer() {
@@ -180,11 +176,10 @@
             if (!inFocus) {
                 document.title = 'Time Over!';
             }
+            var audioElement = document.getElementById('audio__beep');
+            audioElement.play();
             beepInterval = setInterval(function() {
-                var audioElement = document.getElementById('audio__beep');
-                if (audioElement) {
-                    audioElement.play();
-                }
+                audioElement.play();
             }, 2000);
         }, time);
         if ($('.time-input-fields').is(':visible')) {
@@ -196,7 +191,7 @@
         }
         setTimeout(function () {
             $('.control-buttons').animate({
-                'margin-top': ($('#text__time-remaining').height() + 20) + 'px'
+                'margin-top': ($('#text__time-remaining').height() + 40) + 'px'
             },
             {   
                 duration: 125
@@ -216,7 +211,7 @@
             $('#text__time-remaining').fadeOut(125, function() {
                 $('.time-input-fields').fadeIn(125, function() {
                     $('.control-buttons').animate({
-                        'margin-top': ($('.time-input-fields').height() - 20) + 'px'
+                        'margin-top': ($('.time-input-fields').height()) + 'px'
                     },
                     {   
                         duration: 125
@@ -260,14 +255,35 @@
     $(document).ready(function() {
         var checkIfLoaded = setInterval(function() {
             if (Window.removeLoader) {
-                $('#loading-overlay').fadeOut(function() {
-                    $(this).remove();
-                })
-                $('main').fadeIn();
                 clearInterval(checkIfLoaded);
+                $(".loader-background").animate(
+                    {
+                      width: "0px",
+                      height: "0px"
+                    },
+                    675,
+                    "swing",
+                    function () {
+                        $('.spinner').animate({
+                            "top": $("#loading-overlay").height() +'px'
+                          },
+                        325,
+                        "linear",
+                        function () {
+                            $('main').fadeIn(125, function () {
+                                $('.control-buttons').fadeIn(125);
+                                if (!currentTimer) {
+                                    $('.time-input-fields').fadeIn(125);
+                                }
+                                $("#loading-overlay").remove();
+                            });
+                        })
+                    }
+                );
             }
         }, 125);
-    });  
+    });
+
     $(window).focus(function() {
         inFocus = true;
         if (document.title !== 'Timer') {
@@ -293,19 +309,22 @@
         clearInterval(progressTimer);
         progressTimer = null;
     });
+
     $(window).resize(function() {
         if ($('#text__time-remaining').is(':visible')) {
-            $('.control-buttons').css('margin-top', $('#text__time-remaining').height() + 'px');
+            $('.control-buttons').css('margin-top', ($('#text__time-remaining').height() - 16) + 'px');
         } else if ($('.time-input-fields').is(':visible')) {
-            $('.control-buttons').css('margin-top', $('.time-input-fields').height() + 'px');
+            $('.control-buttons').css('margin-top', ($('.time-input-fields').height() - 16) + 'px');
         }
     });
     $('#button__reset-timer').click(function() {
         resetTimer();
     });
+
     $('#button__restart-timer').click(function() {
         restartTimer();
     });
+
     $('#button__start-timer').click(function() {
         if (!currentTimer) {
             if (($('#number__seconds').val() + $('#number__hours').val() + $('#number__minutes').val() + $('#number__days').val()) > 0) {
@@ -327,4 +346,5 @@
             }
         }
     });
+
 })();
