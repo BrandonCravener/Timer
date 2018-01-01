@@ -1,12 +1,30 @@
-import * as OfflinePluginRuntime from 'offline-plugin/runtime';
 import { Utils } from './utils';
 import { Timer } from './timer';
+import * as OfflinePluginRuntime from 'offline-plugin/runtime';
+import mdcAutoInit from '@material/auto-init';
+import { MDCRipple, MDCRippleFoundation } from '@material/ripple';
+import { MDCTextField, MDCTextFieldFoundation } from '@material/textfield';
+
+mdcAutoInit.register('MDCTextField', MDCTextField);
+mdcAutoInit.register('MDCRipple', MDCRipple);
 
 // Check to enable offline plugin
-const production = false;
+const production = true;
 
 if (production) {
     OfflinePluginRuntime.install();
+}
+
+let notifications = false;
+
+if ('Notification' in window) {
+    Notification.requestPermission().then(status => {
+        if (status == 'granted') {
+            notifications = true;
+        }
+    }).catch(err => {
+        console.log(err);
+    })
 }
 
 let timer;
@@ -16,19 +34,25 @@ var beepInterval,
     lazyLoadElementsLoaded = 0,
     mainElement = document.getElementsByTagName('main')[0],
     audioElement = document.getElementById('audio__beep'),
-    textDays = document.getElementById('text__time-days').value,
-    textHours = document.getElementById('text__time-hours').value,
+    textDays = document.getElementById('text__time-days'),
+    textHours = document.getElementById('text__time-hours'),
     stopButton = document.getElementById('button__reset-timer'),
-    textMinutes = document.getElementById('text__time-minutes').value,
-    textSeconds = document.getElementById('text__time-seconds').value,
+    textMinutes = document.getElementById('text__time-minutes'),
+    textSeconds = document.getElementById('text__time-seconds'),
     startButton =  document.getElementById('button__start-timer'),
     loaderOverlay = document.getElementById('loading-overlay'),
     lazyLoadElements = document.getElementsByClassName('lazyLoad'),
     restartButton = document.getElementById('button__restart-timer'),
-    loaderBackground = document.getElementsByClassName('loader-background')[0];
+    loaderBackground = document.getElementsByClassName('loader-background')[0],
+    timeRemaningText = document.getElementById('text__time-remaining'),
+    progressBarWrapper = document.getElementById('progress-bar-wrapper'),
+    innerProgressBar = document.getElementById('progress-bar-inner'),
+    inputFields = document.getElementById('input-fields'),
+    endNotification;
 
 // Define a function to remove the loader
 function removeLoader() {
+    mdcAutoInit();
     setTimeout(() => {
         mainElement.removeAttribute('style');
         if (loaderBackground) {
@@ -44,10 +68,44 @@ function removeLoader() {
     }, 250)
 }
 
+// Define a function to stop the timer
+function stopTimer() {
+    document.title = 'Timer';
+    audioElement.currentTime = 0;
+    audioElement.pause()
+    innerProgressBar.style.transition = '';
+    innerProgressBar.style.width = '';
+    Utils.removeClass(timeRemaningText, 'show')
+    setTimeout(() => {
+        Utils.removeClass(inputFields, 'hidden');
+        Utils.removeClass(inputFields, 'fade');
+    }, 500);
+    if (timer) {
+        timer.reset(() => {
+            timer = undefined;
+        });
+    }
+    /*
+    if (endNotification) {
+        endNotification.close().then(() => {
+            endNotification = undefined;
+        }).catch(err => console.err);
+    }
+    */
+}
+
 // Function to handle creating a new timer
 function defineTimer(time, complete, tick) {
     timer = new Timer(time, () => {
         audioElement.play();
+        if (notifications) {
+            endNotification = new Notification('Timer Complete!', {
+                icon: 'images/icon-512x512.png',
+                body: 'Your timer has completed'
+            })
+            endNotification.addEventListener('click', stopTimer);
+            endNotification.addEventListener('close', stopTimer);
+        }
         if (complete) {
             complete();
         }
@@ -55,7 +113,26 @@ function defineTimer(time, complete, tick) {
         if (tick) {
             tick();
         }
+        if (timer) {
+            timeRemaningText.textContent = Utils.currentTime(timer.currentTime).timeText;
+            document.title = Utils.currentTime(timer.currentTime).tabTimeText;
+        }
     });
+}
+
+function startTimer(time) {
+    if (timer) {
+        timer.start();
+        timeRemaningText.textContent = Utils.currentTime(timer.currentTime).timeText;
+        document.title = Utils.currentTime(timer.currentTime).tabTimeText;
+        Utils.addClass(inputFields, 'fade');
+        setTimeout(() => {
+            Utils.addClass(inputFields, 'hidden');
+            Utils.addClass(timeRemaningText, 'show')
+        }, 500);
+        innerProgressBar.style.transition = `width ${time/1000}s linear`;
+        innerProgressBar.style.width = '100%';
+    }
 }
 
 // Number handler function
@@ -87,36 +164,29 @@ for (let i = 0; i < lazyLoadElements.length; i++) {
     }
 }
 
-// Check for Material Design Components
-if (window.mdc) {
-    // Auto initalize elements
-    mdc.autoInit();
-}
-
 // Check for start button
 if (startButton) {
     // Register listener
     startButton.addEventListener('click', () => {
         if (!timer) {
-            if (textDays + textHours + textMinutes + textSeconds > 0) {
+            if (textDays.value + textHours.value + textMinutes.value + textSeconds.value > 0) {
                 let toConvert = [];
-                if (num(textDays)) {
-                    toConvert.push([textDays, 'days']);
+                if (num(textDays.value)) {
+                    toConvert.push([textDays.value, 'days']);
                 }
-                if (num(textHours)) {
-                    toConvert.push([textHours, 'hours']);
+                if (num(textHours.value)) {
+                    toConvert.push([textHours.value, 'hours']);
                 }
-                if (num(textMinutes)) {
-                    toConvert.push([textMinutes, 'minutes']);
+                if (num(textMinutes.value)) {
+                    toConvert.push([textMinutes.value, 'minutes']);
                 }
-                if (num(textSeconds)) {
-                    toConvert.push([textSeconds, 'seconds']);
+                if (num(textSeconds.value)) {
+                    toConvert.push([textSeconds.value, 'seconds']);
                 }
                 if (toConvert) {
-                    defineTimer(Utils.processTimeStringArray(toConvert));
-                    if (timer) {
-                        timer.start();
-                    }
+                    let time = Utils.processTimeStringArray(toConvert);
+                    defineTimer(time);
+                    startTimer(time);
                 }
             }
         }
@@ -125,30 +195,30 @@ if (startButton) {
 // Check for stop button
 if (stopButton) {
     // Reigter listener
-    stopButton.addEventListener('click', () => {
-        audioElement.currentTime = 0;
-        audioElement.pause()
-        if (timer) {
-            timer = null;
-        }
-    })
+    stopButton.addEventListener('click', stopTimer);
 }
 // Check for restart button
 if (restartButton) {
     // Regsiter listener
     restartButton.addEventListener('click', () => {
         if (timer) {
+            let currentTimerTime = timer.time;
             // Call method to restrt timer
-            timer.restart();
+            stopTimer();
+            defineTimer(currentTimerTime - 1000);
+            setTimeout(() => {
+                startTimer(currentTimerTime - 1000);
+            }, 1000)
         }
     })
 }
 
 if (Utils.parseUrlTimeString() && Utils.parseUrlTimeString().length !== 0) {
+    let time = Utils.processTimeStringArray(Utils.parseUrlTimeString());
     // Set the timer variable to the new timer
-    defineTimer(Utils.processTimeStringArray(Utils.parseUrlTimeString()));
+    defineTimer(time);
     // Start the timer
-    if (timer) {
-        timer.start();
-    }
+    setTimeout(() => {
+        startTimer(time);
+    })
 }

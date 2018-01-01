@@ -5,6 +5,7 @@ export class Timer {
         this.completeCB = complete;
         this.tickCB = tick;
         this.finishTimeout;
+        this.activeTimer;
     }
     start() {
         this.activeTimer = setInterval(() => {
@@ -18,17 +19,18 @@ export class Timer {
             this.completeCB();
         }, this.time);
     }
-    reset() {
-        if (this.finishTimeout) {
-            clearTimeout(finishTimeout);
-        }
+    reset(cb) {
         if (this.activeTimer) {
-            clearInterval(activeTimer);
+            clearInterval(this.activeTimer);
+            this.activeTimer = undefined;
+        }
+        if (this.finishTimeout) {
+            clearTimeout(this.finishTimeout);
+            this.finishTimeout = undefined;
         }
         this.currentTime = this.ms;
-    }
-    restart() {
-        this.reset();
-        this.start();
+        if (cb) {
+            cb();
+        }
     }
 }

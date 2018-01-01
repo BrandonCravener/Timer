@@ -108,9 +108,13 @@
         </div>
         <h3 style="display: none;">Please enable JavaScript to use this site.</h3>
     </div>
+    <div id="progress-bar-wrapper">
+        <div id="progress-bar-inner"></div>
+    </div>
     <main style="display: none;">
         <div class="v-center">
-            <div class="input-fields">
+            <h1 id="text__time-remaining"></h1>
+            <div id="input-fields">
                 <div class="mdc-text-field" data-mdc-auto-init="MDCTextField">
                     <input type="number" id="text__time-days" class="mdc-text-field__input">
                     <label class="mdc-text-field__label" for="text__time-days">Days</label>
@@ -134,19 +138,18 @@
             </div>
             <div class="control-buttons">
                 <button class="mdc-button" id="button__start-timer" aria-label="Start" data-mdc-auto-init="MDCRipple">
-                <i class="material-icons mdc-button__icon">&#xE037;</i>
-            </button>
+                    <i class="material-icons mdc-button__icon">&#xE037;</i>
+                </button>
                 <button class="mdc-button" id="button__reset-timer" aria-label="Stop" data-mdc-auto-init="MDCRipple">
-                <i class="material-icons mdc-button__icon">&#xE047;</i>
-            </button>
+                    <i class="material-icons mdc-button__icon">&#xE047;</i>
+                </button>
                 <button class="mdc-button" id="button__restart-timer" aria-label="Re-Start" data-mdc-auto-init="MDCRipple">
-                <i class="material-icons mdc-button__icon">&#xE042;</i>
-            </button>
+                    <i class="material-icons mdc-button__icon">&#xE042;</i>
+                </button>
             </div>
         </div>
     </main>
     <audio src='audio/beep.wav' id="audio__beep" type="audio/wav" loop></audio>
-    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
     <script src="js/bundle.js"></script>
 </body>
 
