@@ -12,15 +12,15 @@
     "author": "Brandon Cravener",
     "license": "MIT",
     "devDependencies": {
+        "@material/auto-init": "^0.32.0",
+        "@material/ripple": "^0.32.0",
+        "@material/textfield": "^0.32.0",
         "babel-core": "^6.26.0",
-        "babel-loader": "^7.1.2",
+        "babel-loader": "^7.1.4",
         "babel-plugin-transform-es2015-classes": "^6.24.1",
         "babel-preset-env": "^1.6.1",
-        "offline-plugin": "^4.8.4",
-        "webpack": "^3.10.0",
-        "webpack-dev-server": "^2.9.7",
-        "@material/auto-init": "^0.25.0",
-        "@material/ripple": "^0.27.0",
-        "@material/textfield": "^0.27.0"
+        "offline-plugin": "^4.9.0",
+        "webpack": "^3.11.0",
+        "webpack-dev-server": "^2.11.2"
     }
 }
