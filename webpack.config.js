@@ -1,12 +1,12 @@
-const path = require('path');
-const webpack = require('webpack');
-const OfflinePlugin = require('offline-plugin');
+const path = require("path");
+const OfflinePlugin = require("offline-plugin");
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 
 module.exports = {
-  entry: './src/index.js',
+  entry: "./src/index.js",
   output: {
-    filename: 'js/bundle.js',
-    path: path.resolve(__dirname, 'dist')
+    filename: "js/bundle.js",
+    path: path.resolve(__dirname, "dist")
   },
   module: {
     rules: [
@@ -14,28 +14,30 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
-          loader: 'babel-loader',
+          loader: "babel-loader",
           options: {
-            presets: ['env'],
-            plugins: [require('babel-plugin-transform-es2015-classes')]
+            presets: ["@babel/preset-env"]
           }
         }
       }
     ]
   },
-  devtool: 'eval',
+  devtool: "eval",
+  mode: "production",
   devServer: {
-    contentBase: './dist'
+    contentBase: "./dist"
+  },
+  optimization: {
+    minimizer: [new UglifyJsPlugin()]
   },
   plugins: [
-      new webpack.optimize.UglifyJsPlugin(),
-      new OfflinePlugin({
-          ServiceWorker: {
-              minify: true
-          },
-          AppCache: false,
-          updateStrategy: 'all',
-          audoUpdate: true
-      })
+    new OfflinePlugin({
+      ServiceWorker: {
+        minify: true
+      },
+      AppCache: false,
+      updateStrategy: "all",
+      audoUpdate: true
+    })
   ]
 };

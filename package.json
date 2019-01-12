@@ -1,26 +1,27 @@
 {
-    "name": "timer",
-    "version": "0.0.0",
-    "description": "",
-    "main": "index.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "build": "webpack",
-        "start": "webpack-dev-server --open",
-        "watch": "webpack --progress --watch"
-    },
-    "author": "Brandon Cravener",
-    "license": "MIT",
-    "devDependencies": {
-        "@material/auto-init": "^0.32.0",
-        "@material/ripple": "^0.32.0",
-        "@material/textfield": "^0.32.0",
-        "babel-core": "^6.26.0",
-        "babel-loader": "^7.1.4",
-        "babel-plugin-transform-es2015-classes": "^6.24.1",
-        "babel-preset-env": "^1.6.1",
-        "offline-plugin": "^4.9.0",
-        "webpack": "^3.11.0",
-        "webpack-dev-server": "^2.11.2"
-    }
+  "name": "timer",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "start": "webpack-dev-server --open",
+    "watch": "webpack --progress --watch"
+  },
+  "author": "Brandon Cravener",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.2.3",
+    "@material/auto-init": "^0.32.0",
+    "@material/ripple": "^0.32.0",
+    "@material/textfield": "^0.32.0",
+    "babel-loader": "^8.0.5",
+    "offline-plugin": "^5.0.6",
+    "uglifyjs-webpack-plugin": "^2.1.1",
+    "webpack": "^4.28.4",
+    "webpack-cli": "^3.2.1",
+    "webpack-dev-server": "^3.1.14"
+  }
 }
