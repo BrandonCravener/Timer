@@ -21,11 +21,9 @@ Install this project by running:
 
 1. `$ git clone https://github.com/BrandonCravener/Timer`
 2. `$ cd Timer`
-3. `$ git checkout develop`
-4. `$ yarn global add @angular/cli`
-5. `$ yarn`
+3. `$ yarn`
 
-Run with `$ ng serve`
+Run with `$ yarn start`
 
 ---
 

@@ -1,43 +1,44 @@
-const path = require("path");
-const OfflinePlugin = require("offline-plugin");
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
+const CleanWebpackPlugin = require("clean-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-  entry: "./src/index.js",
+  entry: "./src/ts/index.ts",
   output: {
-    filename: "js/bundle.js",
-    path: path.resolve(__dirname, "dist")
+    filename: "index.js",
+    path: __dirname + "/dist"
   },
+  resolve: {
+    // Add '.ts' and '.tsx' as resolvable extensions.
+    extensions: [".ts", ".tsx", ".js"]
+  },
+  devtool: "inline-source-map",
   module: {
     rules: [
       {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: {
-          loader: "babel-loader",
-          options: {
-            presets: ["@babel/preset-env"]
-          }
-        }
-      }
+        test: /\.scss$/,
+        use: ["style-loader", "css-loader", "sass-loader"]
+      },
+      { test: /\.(woff|woff2|eot|ttf)$/, loader: "url-loader?limit=100000" },
+      { test: /\.tsx?$/, loader: "ts-loader" }
     ]
   },
-  devtool: "eval",
-  mode: "production",
-  devServer: {
-    contentBase: "./dist"
-  },
-  optimization: {
-    minimizer: [new UglifyJsPlugin()]
-  },
   plugins: [
-    new OfflinePlugin({
-      ServiceWorker: {
-        minify: true
-      },
-      AppCache: false,
-      updateStrategy: "all",
-      audoUpdate: true
+    new CleanWebpackPlugin("dist"),
+    new CopyWebpackPlugin([
+      {
+        from: "./static/**/*.*",
+        transformPath(targetPath) {
+          return targetPath.replace("static/", "");
+        }
+      }
+    ]),
+    new HtmlWebpackPlugin({
+      template: "src/html/index.html",
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      }
     })
   ]
 };

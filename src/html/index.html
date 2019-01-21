@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Timer</title>
+  </head>
+  <body>
+    <div class="valign-wrapper">
+      <div class="container">
+        <div id="time_fields" class="row">
+          <div class="input-field col s12 m6 l4">
+            <input id="i_hours" type="text" />
+            <label for="i_hours">Hours</label>
+          </div>
+          <div class="input-field col s12 m6 l4">
+            <input id="i_minutes" type="text" />
+            <label for="i_minutes">Minutes</label>
+          </div>
+          <div class="input-field col s12 m6 l4">
+            <input id="i_seconds" type="text" />
+            <label for="i_seconds">Seconds</label>
+          </div>
+        </div>
+        <div id="t_time" class="row"></div>
+        <div class="row center">
+          <a
+            id="b_pause"
+            class="waves-effect waves-light black-text btn tooltipped"
+            data-tooltip="Pause"
+          >
+            <i class="material-icons">pause</i>
+          </a>
+          <a
+            id="b_start"
+            class="waves-effect waves-light black-text btn tooltipped"
+            data-tooltip="Start"
+          >
+            <i class="material-icons">play_arrow</i>
+          </a>
+          <a
+            id="b_stop"
+            class="waves-effect waves-light black-text btn tooltipped"
+            data-tooltip="Stop"
+          >
+            <i class="material-icons">stop</i>
+          </a>
+          <a
+            id="b_restart"
+            class="waves-effect waves-light black-text btn tooltipped"
+            data-tooltip="Replay"
+          >
+            <i class="material-icons">replay</i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
