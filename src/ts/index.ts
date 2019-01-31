@@ -4,9 +4,18 @@ import "../css/index.scss";
 import elements from "./elements";
 import Timer from "./timer";
 
+/*
+ * TODO: URL Parsing
+ *       Timer Beep
+ */
 AutoInit();
 
+const audioNode = document.createElement("audio");
+audioNode.src = "./audio/beep.wav";
+audioNode.loop = true;
+
 let timer = new Timer(tick, complete);
+let notifications = false;
 
 function tick() {
   const text = timer.getTimeString();
@@ -27,34 +36,52 @@ function tick() {
   elements.textTime.textContent = text;
 }
 
-function complete() {}
+function complete() {
+  elements.textTime.textContent = "Completed";
+  document.title = "Completed";
+  audioNode.currentTime = 0;
+  audioNode.play();
+}
 
 elements.buttonStart.addEventListener("click", () => {
-  // Hide / Show appropriate buttons
-  elements.groupNotStart.forEach(button => {
-    button.classList.add("started");
-  });
-  elements.buttonStart.classList.add("stopped");
-  // Hide time fields
-  elements.divTimeFields.classList.add("started");
   // Start timer
   let totalTime = 0;
   totalTime += Number(elements.inputHours.value) * (60 * 60 * 1000);
   totalTime += Number(elements.inputMinutes.value) * (60 * 1000);
   totalTime += Number(elements.inputSeconds.value) * 1000;
   timer.start(totalTime);
+  // Update time text
+  elements.textTime.textContent = timer.getTimeString();
+
+  // Hide / Show appropriate buttons
+  elements.groupNotStart.forEach(button => {
+    button.classList.add("started");
+  });
+  elements.buttonStart.classList.add("started");
+  // Hide time fields
+  elements.divTimeFields.classList.add("started");
+  // Show time text
+  elements.textTime.classList.add("started");
 });
 
 elements.buttonStop.addEventListener("click", () => {
+  // Stop beeping
+  audioNode.pause();
+  // Stop timer
+  timer.stop();
+  // Update time text
+  elements.textTime.textContent = timer.getTimeString();
+  // Update tab title
+  document.title = "Timer";
   // Hide / Show appropriate buttons
   elements.groupNotStart.forEach(button => {
     button.classList.remove("started");
   });
-  elements.buttonStart.classList.remove("stopped");
+  elements.buttonStart.classList.remove("started");
   // Show time fields
   elements.divTimeFields.classList.remove("started");
-  // Stop timer
-  timer.stop();
+  // Hide time text
+  elements.textTime.classList.remove("started");
 });
 
 elements.buttonReStart.addEventListener("click", () => {
@@ -62,6 +89,9 @@ elements.buttonReStart.addEventListener("click", () => {
 });
 
 elements.buttonPause.addEventListener("click", () => {
+  // Update time text
+  elements.textTime.textContent = timer.getTimeString();
+
   if (timer.paused) {
     timer.resume();
 
@@ -83,3 +113,13 @@ elements.buttonPause.addEventListener("click", () => {
       "Resume";
   }
 });
+
+if ("Notification" in window) {
+  if (Notification.permission == "default") {
+    Notification.requestPermission().then(granted => {
+      notifications = granted == "granted";
+    });
+  } else {
+    notifications = Notification.permission == "granted";
+  }
+}

@@ -9,21 +9,23 @@
   <body>
     <div class="valign-wrapper">
       <div class="container">
-        <div id="time_fields" class="row">
-          <div class="input-field col s12 m6 l4">
-            <input id="i_hours" type="text" />
-            <label for="i_hours">Hours</label>
+        <div class="non-control row">
+          <div id="time_fields">
+            <div class="input-field col s12 m6 l4">
+              <input id="i_hours" type="text" />
+              <label for="i_hours">Hours</label>
+            </div>
+            <div class="input-field col s12 m6 l4">
+              <input id="i_minutes" type="text" />
+              <label for="i_minutes">Minutes</label>
+            </div>
+            <div class="input-field col s12 m6 l4">
+              <input id="i_seconds" type="text" />
+              <label for="i_seconds">Seconds</label>
+            </div>
           </div>
-          <div class="input-field col s12 m6 l4">
-            <input id="i_minutes" type="text" />
-            <label for="i_minutes">Minutes</label>
-          </div>
-          <div class="input-field col s12 m6 l4">
-            <input id="i_seconds" type="text" />
-            <label for="i_seconds">Seconds</label>
-          </div>
+          <div id="t_time"></div>
         </div>
-        <div id="t_time" class="row"></div>
         <div class="row center">
           <a
             id="b_pause"

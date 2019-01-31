@@ -32,7 +32,7 @@ $theme-color: #3f51b5;
   position: absolute;
   transition: opactiy 0.5s ease-in-out;
 }
-#b_start.stopped {
+#b_start.started {
   opacity: 0;
 }
 
@@ -52,4 +52,15 @@ $theme-color: #3f51b5;
 }
 #time_fields.started {
   transform: scaleX(0);
+}
+
+#t_time {
+  left: 50%;
+  font-size: 4rem;
+  position: fixed;
+  transform: scale(0) translateX(-50%);
+  transition: all 0.5s ease-in-out;
+}
+#t_time.started {
+  transform: scale(1) translateX(-50%);
 }
