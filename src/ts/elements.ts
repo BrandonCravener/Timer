@@ -8,6 +8,7 @@ const elements = {
   inputSeconds: <HTMLInputElement>document.getElementById("i_seconds"),
   groupNotStart: document.querySelectorAll(".btn:not(#b_start)"),
   divTimeFields: document.getElementById("time_fields"),
+  divProgress: document.getElementById("progress"),
   textTime: document.getElementById("t_time")
 };
 

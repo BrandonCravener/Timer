@@ -1,12 +1,12 @@
 export default class Timer {
-  private time: number;
   private tick: Function;
   private complete: Function;
-  private currentTime: number;
 
   private tickInterval: number;
   private completeTimeout: number;
 
+  public time: number;
+  public currentTime: number;
   public paused: boolean = false;
 
   constructor(tick: Function, complete: Function) {
@@ -37,8 +37,19 @@ export default class Timer {
   }
 
   resume() {
+    const remainingTime = this.time - (this.time - this.currentTime);
+
     this.paused = false;
-    this.start(this.currentTime);
+
+    this.tickInterval = setInterval(() => {
+      this.tick();
+      this.currentTime -= 1000;
+    }, 1000);
+
+    this.completeTimeout = setTimeout(() => {
+      this.stop();
+      this.complete();
+    }, remainingTime);
   }
 
   pause() {

@@ -2,29 +2,6 @@
 @import "../../node_modules/material-design-icons/iconfont/material-icons.css";
 
 $theme-color: #3f51b5;
-.valign-wrapper {
-  height: 100%;
-  width: 100%;
-  position: absolute;
-}
-
-.btn {
-  margin: 0 10px;
-  background-color: $theme-color !important;
-}
-
-.input-field label {
-  color: #000 !important;
-}
-/* label focus color */
-.input-field input[type="text"]:focus + label {
-  color: #000 !important;
-}
-/* label underline focus color */
-.input-field input[type="text"]:focus {
-  border-bottom: 1px solid $theme-color !important;
-  box-shadow: 0 1px 0 0 $theme-color !important;
-}
 
 #b_start {
   opacity: 1;
@@ -63,4 +40,35 @@ $theme-color: #3f51b5;
 }
 #t_time.started {
   transform: scale(1) translateX(-50%);
+}
+
+/* Materialize customization */
+.valign-wrapper {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+}
+
+.btn {
+  margin: 0 10px;
+  background-color: $theme-color !important;
+}
+
+.input-field label {
+  color: #000 !important;
+}
+/* label focus color */
+.input-field input[type="text"]:focus + label {
+  color: #000 !important;
+}
+/* label underline focus color */
+.input-field input[type="text"]:focus {
+  border-bottom: 1px solid $theme-color !important;
+  box-shadow: 0 1px 0 0 $theme-color !important;
+}
+
+.progress {
+  top: 0;
+  margin: 0;
+  position: fixed;
 }

@@ -7,20 +7,27 @@
     <title>Timer</title>
   </head>
   <body>
+    <div class="progress">
+      <div
+        id="progress"
+        class="determinate"
+        style="transition: width 1s linear;"
+      ></div>
+    </div>
     <div class="valign-wrapper">
       <div class="container">
         <div class="non-control row">
           <div id="time_fields">
             <div class="input-field col s12 m6 l4">
-              <input id="i_hours" type="text" />
+              <input id="i_hours" type="number" />
               <label for="i_hours">Hours</label>
             </div>
             <div class="input-field col s12 m6 l4">
-              <input id="i_minutes" type="text" />
+              <input id="i_minutes" type="number" />
               <label for="i_minutes">Minutes</label>
             </div>
             <div class="input-field col s12 m6 l4">
-              <input id="i_seconds" type="text" />
+              <input id="i_seconds" type="number" />
               <label for="i_seconds">Seconds</label>
             </div>
           </div>
@@ -51,7 +58,7 @@
           <a
             id="b_restart"
             class="waves-effect waves-light black-text btn tooltipped"
-            data-tooltip="Replay"
+            data-tooltip="Restart"
           >
             <i class="material-icons">replay</i>
           </a>
