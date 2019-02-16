@@ -1,41 +1,51 @@
-const path = require('path');
-const webpack = require('webpack');
-const OfflinePlugin = require('offline-plugin');
+const CopyWebpackPlugin = require("copy-webpack-plugin");
+const CleanWebpackPlugin = require("clean-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const WorkboxPlugin = require("workbox-webpack-plugin");
 
 module.exports = {
-  entry: './src/index.js',
+  entry: {
+    index: "./src/ts/index.ts"
+  },
   output: {
-    filename: 'js/bundle.js',
-    path: path.resolve(__dirname, 'dist')
+    filename: "[name].bundle.js",
+    chunkFilename: "[name].bundle.js",
+    path: __dirname + "/dist"
+  },
+  resolve: {
+    // Add '.ts' and '.tsx' as resolvable extensions.
+    extensions: [".ts", ".tsx", ".js"]
   },
   module: {
     rules: [
       {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['env'],
-            plugins: [require('babel-plugin-transform-es2015-classes')]
-          }
-        }
-      }
+        test: /\.scss$/,
+        use: ["style-loader", "css-loader", "sass-loader"]
+      },
+      { test: /\.(woff|woff2|eot|ttf)$/, loader: "url-loader?limit=100000" },
+      { test: /\.tsx?$/, loader: "ts-loader" }
     ]
   },
-  devtool: 'eval',
-  devServer: {
-    contentBase: './dist'
-  },
   plugins: [
-      new webpack.optimize.UglifyJsPlugin(),
-      new OfflinePlugin({
-          ServiceWorker: {
-              minify: true
-          },
-          AppCache: false,
-          updateStrategy: 'all',
-          audoUpdate: true
-      })
+    new CleanWebpackPlugin("dist"),
+    new CopyWebpackPlugin([
+      {
+        from: "./static/**/*.*",
+        transformPath(targetPath) {
+          return targetPath.replace("static/", "");
+        }
+      }
+    ]),
+    new HtmlWebpackPlugin({
+      template: "src/html/index.html",
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      }
+    }),
+    new WorkboxPlugin.GenerateSW({
+      clientsClaim: true,
+      skipWaiting: true
+    })
   ]
 };
