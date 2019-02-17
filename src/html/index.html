@@ -2,6 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#1481F5" />
+    <meta name="Description" content="A simplistic timer web app that was created as an alternative to e.ggtimer.com." />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Timer</title>
@@ -39,28 +42,32 @@
             class="waves-effect waves-light black-text btn tooltipped"
             data-tooltip="Pause"
           >
-            <i class="material-icons">pause</i>
+            <img class="material-icons" src="/icons/pause.svg" alt="Pause" />
           </a>
           <a
             id="b_start"
             class="waves-effect waves-light black-text btn tooltipped"
             data-tooltip="Start"
           >
-            <i class="material-icons">play_arrow</i>
+            <img
+              class="material-icons"
+              src="/icons/play_arrow.svg"
+              alt="Play"
+            />
           </a>
           <a
             id="b_stop"
             class="waves-effect waves-light black-text btn tooltipped"
             data-tooltip="Stop"
           >
-            <i class="material-icons">stop</i>
+            <img class="material-icons" src="/icons/stop.svg" alt="Stop" />
           </a>
           <a
             id="b_restart"
             class="waves-effect waves-light black-text btn tooltipped"
             data-tooltip="Restart"
           >
-            <i class="material-icons">replay</i>
+            <img class="material-icons" src="/icons/replay.svg" alt="Replay" />
           </a>
         </div>
       </div>

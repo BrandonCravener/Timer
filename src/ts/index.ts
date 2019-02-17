@@ -4,15 +4,17 @@ import "../css/index.scss";
 import elements from "./elements";
 import Timer from "./timer";
 
-/*
- * TODO:
- *    URL Parsing
- */
 AutoInit();
 
+const alphaRegex = /([a-z]+)/gi;
+
+const hoursRegex = /(h|hr|hour)/gi;
+const minutesRegex = /(m|min)/gi;
+const secondsRegex = /(s|sec)/gi;
+
+const timeQuery = document.location.search.replace("?t=", "").split(alphaRegex);
+
 const audioNode = document.createElement("audio");
-audioNode.src = "./audio/beep.wav";
-audioNode.loop = true;
 
 let timer: Timer = new Timer(tick, complete);
 let notifications: Boolean = false;
@@ -103,16 +105,10 @@ function complete() {
   });
 }
 
-elements.buttonStart.addEventListener("click", () => {
-  // Calculate time in miliseconds
-  let totalTime = 0;
-  totalTime += Number(elements.inputHours.value) * (60 * 60 * 1000);
-  totalTime += Number(elements.inputMinutes.value) * (60 * 1000);
-  totalTime += Number(elements.inputSeconds.value) * 1000;
-
-  if (totalTime >= 1000) {
+function start(time: number) {
+  if (time >= 1000) {
     // Start timer
-    timer.start(totalTime);
+    timer.start(time);
 
     // Update time text
     elements.textTime.textContent = timer.getTimeString();
@@ -127,6 +123,17 @@ elements.buttonStart.addEventListener("click", () => {
     // Show time text
     elements.textTime.classList.add("started");
   }
+}
+
+elements.buttonStart.addEventListener("click", () => {
+  // Calculate time in miliseconds
+  let totalTime = 0;
+
+  totalTime += Number(elements.inputHours.value) * (60 * 60 * 1000);
+  totalTime += Number(elements.inputMinutes.value) * (60 * 1000);
+  totalTime += Number(elements.inputSeconds.value) * 1000;
+
+  start(totalTime);
 });
 
 elements.buttonStop.addEventListener("click", stop);
@@ -161,6 +168,9 @@ elements.buttonPause.addEventListener("click", () => {
   }
 });
 
+audioNode.src = "./audio/beep.wav";
+audioNode.loop = true;
+
 if ("Notification" in window) {
   if (Notification.permission == "default") {
     Notification.requestPermission().then(granted => {
@@ -169,4 +179,48 @@ if ("Notification" in window) {
   } else {
     notifications = Notification.permission == "granted";
   }
+}
+
+if (timeQuery.length > 0) {
+  let cleanTimeQuery = [];
+
+  // Clean up array
+  timeQuery.forEach(time => {
+    if (time != "") {
+      cleanTimeQuery.push(time);
+    }
+  });
+
+  let totalTime = 0;
+  // Itterate through each pair
+  for (let i = 0; i < cleanTimeQuery.length; i += 2) {
+    const timeAmmount = cleanTimeQuery[i];
+    const timeUnit = cleanTimeQuery[i + 1];
+    console.log(timeAmmount, timeUnit);
+    if (hoursRegex.test(timeUnit)) {
+      totalTime += timeAmmount * (1000 * 60 * 60);
+    } else if (minutesRegex.test(timeUnit)) {
+      totalTime += timeAmmount * (1000 * 60);
+    } else if (secondsRegex.test(timeUnit)) {
+      totalTime += timeAmmount * 1000;
+    } else {
+      totalTime += timeAmmount * 1000;
+    }
+  }
+  console.log(totalTime);
+
+  start(totalTime);
+}
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/service-worker.js").then(
+      registration => {
+        console.debug(`Service worker registered ${registration}`);
+      },
+      regError => {
+        console.debug(`Service worker failed to register ${regError}`);
+      }
+    );
+  });
 }

@@ -1,18 +1,21 @@
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const WorkboxPlugin = require("workbox-webpack-plugin");
 
 module.exports = {
-  entry: "./src/ts/index.ts",
+  entry: {
+    index: "./src/ts/index.ts"
+  },
   output: {
-    filename: "index.js",
+    filename: "[name].bundle.js",
+    chunkFilename: "[name].bundle.js",
     path: __dirname + "/dist"
   },
   resolve: {
     // Add '.ts' and '.tsx' as resolvable extensions.
     extensions: [".ts", ".tsx", ".js"]
   },
-  devtool: "inline-source-map",
   module: {
     rules: [
       {
@@ -39,6 +42,10 @@ module.exports = {
         removeComments: true,
         collapseWhitespace: true
       }
+    }),
+    new WorkboxPlugin.GenerateSW({
+      clientsClaim: true,
+      skipWaiting: true
     })
   ]
 };

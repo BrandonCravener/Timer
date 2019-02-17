@@ -6,6 +6,13 @@ A simplistic timer web app that was created as an alternative to e.ggtimer.com.
 
 ---
 
+## Credits
+
+- Icons from [Material Design](https://material.io) by [Google](https://google.com) licensed under [Apache license version 2.0](https://www.apache.org/licenses/LICENSE-2.0.html).
+- [MaterializeCSS](https://materializecss.com/) by Alvin Wang, Alan Chang, Alex Mark, and Kevin Louie licensed under [MIT License](https://opensource.org/licenses/MIT).
+
+---
+
 ## Features
 
 - Simple UI

@@ -1,5 +1,4 @@
 @import "../../node_modules/materialize-css/sass/materialize.scss";
-@import "../../node_modules/material-design-icons/iconfont/material-icons.css";
 
 $theme-color: #3f51b5;
 
@@ -71,4 +70,8 @@ $theme-color: #3f51b5;
   top: 0;
   margin: 0;
   position: fixed;
+}
+
+.btn {
+  font-size: 24px !important;
 }
