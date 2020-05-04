@@ -1,4 +1,4 @@
-# [Timer](https://t.brandoncravener.com)
+# [Timer](https://brandoncravener.github.io/Timer/)
 
 ## Description
 
@@ -43,7 +43,7 @@ Run with `$ yarn start`
 
 ## Support
 
-If there are any major issues with this project, please report them at: [contact@brandoncravener.com](mailto:contact@brandoncravener.com)
+If there are any major issues with this project please create an issue on the  [Issue Tracker](https://github.com/BrandonCravener/Timer/issues/new).
 
 ---
 
